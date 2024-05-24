@@ -12,19 +12,25 @@ let colorNames: [LocalizedStringResource] = [LocalizedStringResource("Vela.selec
 
 public struct VelaPicker<L: View>: View {
   public var color: Binding<Color>
-  public var label: () -> L
   public var allowOpacity: Bool
+  public var label: () -> L
   public init(color: Binding<Color>, label: @escaping () -> L = {Text("Vela")}, allowOpacity: Bool = true) {
     self.color = color
-    self.label = label
     self.allowOpacity = allowOpacity
+    self.label = label
   }
   @State var isColorSheetDisplaying = false
   public var body: some View {
     Button(action: {
       isColorSheetDisplaying.toggle()
     }, label: {
-      label()
+      HStack {
+        label()
+        Spacer()
+        Circle()
+          .foregroundStyle(color.wrappedValue)
+          .frame(width: 10)
+      }
     })
     .sheet(isPresented: $isColorSheetDisplaying, content: {
       VelaMainView(color: color, allowOpacity: allowOpacity)
@@ -66,14 +72,14 @@ struct VelaTabSheet: View {
           Image(systemName: colorTabSymbol[colorTab])
         })
       }
-//      .ignoresSafeArea()
+      //      .ignoresSafeArea()
       .sheet(isPresented: $colorTabSheetIsDisplaying, content: {
         NavigationStack {
           List {
             ForEach(0..<colorTabNames.count, id: \.self) { displayColorTab in
               Button(action: {
                 colorTab = displayColorTab
-//                dismiss()
+                //                dismiss()
               }, label: {
                 VelaLabel(directString: colorTabNames[displayColorTab], labelIcon: colorTabSymbol[displayColorTab])
                 //              Label(colorTabNames[displayColorTab], image: colorTabSymbol[displayColorTab])
