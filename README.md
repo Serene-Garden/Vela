@@ -63,3 +63,10 @@ It only stores 2 setting values.
 No data are shared or uploaded to neither other devices nor the Internet.
 
 Vela won't be able to know what color you've inputted.
+
+## Notes
+I picked "Vela" from the constellation list in Wikipedia. I thought is was a good name and I added it into my note, then gave it to her (Vela).
+
+I would never thought that Xiaomi picked Vela too. I wanna declare that Garden Vela has no connection to Xiaomi Vela, it's just a color picker.
+
+Garden Vela doesn't make any profit, and it's just coincidence for having the same name with Xiaomi Vela. Please do not sue me, please.
