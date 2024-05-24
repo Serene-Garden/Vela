@@ -7,8 +7,9 @@
 
 import SwiftUI
 
+public let VelaVersion = "1.0.0"
+
 public struct VelaSettingsView: View {
-  public let VelaVersion = "Alpha"
   public init(VelaColorPreviewTakesFullSpace: Bool = true) {
     self.VelaColorPreviewTakesFullSpace = VelaColorPreviewTakesFullSpace
   }
