@@ -5,7 +5,7 @@ A Color Picker for watchOS
 
 I believe that SwiftUI team could definetly sketch and make a color picker for watchOS.
 
-But thet just didn't.
+But they just didn't.
 
 So I had to make a color picker by my own, in order to select a color on Watch.
 
