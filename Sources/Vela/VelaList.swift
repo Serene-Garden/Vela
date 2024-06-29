@@ -9,6 +9,7 @@ import SwiftUI
 
 struct VelaListView: View {
   @Binding var color: Color
+  var defaultColor: Color? = nil
   var allowOpacity = true
   var allowRGB = true
   var allowHSB = true
@@ -43,7 +44,7 @@ struct VelaListView: View {
                   VelaColorIndicator(color: $color, allowOpacity: allowOpacity)
                 })
                 ToolbarItemGroup(placement: .bottomBar, content: {
-                  VelaTabSheet()
+                  VelaTabSheet(color: $color, defaultColor: defaultColor)
                 })
               }
             }
@@ -63,7 +64,7 @@ struct VelaListView: View {
             VelaColorIndicator(color: $color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
           })
           ToolbarItemGroup(placement: .bottomBar, content: {
-            VelaTabSheet()
+            VelaTabSheet(color: $color, defaultColor: defaultColor)
           })
         }
       }

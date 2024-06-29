@@ -11,6 +11,7 @@ import UIKit
 
 struct VelaSliderView: View {
   @Binding var color: Color
+  var defaultColor: Color? = nil
   var allowOpacity = true
   @State var colorIsRGB = true
   @State var sliderRed = 0.0
@@ -118,7 +119,7 @@ struct VelaSliderView: View {
               })
               .disabled(!(!allowRGB || !allowHSB))
               Spacer()
-              VelaTabSheet()
+              VelaTabSheet(color: $color, defaultColor: defaultColor)
             }
             .background {
               Rectangle()

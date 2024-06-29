@@ -12,6 +12,7 @@ let colorNames: [LocalizedStringResource] = [LocalizedStringResource("Vela.selec
 
 public struct VelaPicker<L: View>: View {
   public var color: Binding<Color>
+  public var defaultColor: Color?
   public var allowOpacity: Bool
   public var allowRGB: Bool
   public var allowHSB: Bool
@@ -19,8 +20,9 @@ public struct VelaPicker<L: View>: View {
   public var HSB_primary: Bool
   public var label: () -> L
   public var onSubmit: () -> Void = {}
-  public init(color: Binding<Color>, allowOpacity: Bool = true, allowRGB: Bool = true, allowHSB: Bool = true, allowCMYK: Bool = true, HSB_primary: Bool = false, label: @escaping () -> L = {Text("Vela")}, onSubmit: @escaping () -> Void = {}) {
+  public init(color: Binding<Color>, defaultColor: Color? = nil, allowOpacity: Bool = true, allowRGB: Bool = true, allowHSB: Bool = true, allowCMYK: Bool = true, HSB_primary: Bool = false, label: @escaping () -> L = {Text("Vela")}, onSubmit: @escaping () -> Void = {}) {
     self.color = color
+    self.defaultColor = defaultColor
     self.allowOpacity = allowOpacity
     self.allowRGB = allowRGB
     self.allowHSB = allowHSB
@@ -43,7 +45,7 @@ public struct VelaPicker<L: View>: View {
       }
     })
     .sheet(isPresented: $isColorSheetDisplaying, content: {
-      VelaMainView(color: color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
+      VelaMainView(color: color, defaultColor: defaultColor, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
     })
     .onDisappear {
       onSubmit()
@@ -53,6 +55,7 @@ public struct VelaPicker<L: View>: View {
 
 struct VelaMainView: View {
   @Binding var color: Color
+  var defaultColor: Color? = nil
   var allowOpacity = true
   var allowRGB = true
   var allowHSB = true
@@ -61,9 +64,9 @@ struct VelaMainView: View {
   @AppStorage("VelaColorTab") var colorTab: Int = 0
   var body: some View {
     if colorTab == 0 {
-      VelaListView(color: $color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
+      VelaListView(color: $color, defaultColor: defaultColor, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
     } else if colorTab == 1 {
-      VelaSliderView(color: $color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
+      VelaSliderView(color: $color, defaultColor: defaultColor, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
     } else {
       Text("\(colorTab)").monospaced()
     }
@@ -71,10 +74,12 @@ struct VelaMainView: View {
 }
 
 struct VelaTabSheet: View {
+  @Binding var color: Color
   @AppStorage("VelaColorTab") var colorTab: Int = 0
   @State var colorTabSheetIsDisplaying = false
   @Environment(\.dismiss) var dismiss
   var hideSpacer = false
+  var defaultColor: Color? = nil
   let colorTabNames = [LocalizedStringResource("Vela.picker", bundle: .atURL(Bundle.module.bundleURL)), LocalizedStringResource("Vela.slider", bundle: .atURL(Bundle.module.bundleURL))]
   let colorTabSymbol = ["list.bullet", "slider.horizontal.3"]
   var body: some View {
@@ -100,6 +105,20 @@ struct VelaTabSheet: View {
               }, label: {
                 VelaLabel(directString: colorTabNames[displayColorTab], labelIcon: colorTabSymbol[displayColorTab])
                 //              Label(colorTabNames[displayColorTab], image: colorTabSymbol[displayColorTab])
+              })
+            }
+            if defaultColor != nil {
+              Button(action: {
+                color = defaultColor!
+//                dismiss()
+              }, label: {
+                HStack {
+                  VelaLabel(directString: "Vela.defualt", labelIcon: "clock.arrow.trianglehead.counterclockwise.rotate.90")
+                  Spacer()
+                  if color == defaultColor! {
+                    Image(systemName: "checkmark")
+                  }
+                }
               })
             }
           }
