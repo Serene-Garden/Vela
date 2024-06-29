@@ -24,7 +24,7 @@ So I had to make a color picker by my own, in order to select a color on Watch.
 ```swift
 VelaPicker(color: $color, allowOpacity: true, label: {
     Text("Vela")
-})
+}, allowRGB: true, allowHSB: true, allowCMYK: true, HSB_primary: false)
 ```
 ### color
 `color: Binding<Color>` determine what is the color.
