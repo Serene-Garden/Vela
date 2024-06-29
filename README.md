@@ -22,15 +22,20 @@ So I had to make a color picker by my own, in order to select a color on Watch.
  
 ## Parameters
 ```swift
-VelaPicker(color: $color, allowOpacity: true, allowRGB: true, allowHSB: true, allowCMYK: true, HSB_primary: false, label: {Text("Vela")}, onSubmit: {print("Vela color submitted")})
+VelaPicker(color: $color, defaultColor: Color.blue, allowOpacity: true, allowRGB: true, allowHSB: true, allowCMYK: true, HSB_primary: false, label: {Text("Vela")}, onSubmit: {print("Vela color submitted")})
 ```
 ### color
 `color: Binding<Color>` determine what is the color.
 
+### defaultColor
+`defaultColor: Color?` allows users to reset their color to the default one
+
+Default as `nil`
+
 ### allowOpacity
 `allowOpacity: Bool` shows if the opacity value is allowed to be seen and changed.
 
-Default as `true`.
+Default as `true`
 
 ### allowRGB, allowHSB & allowCMYK
 `allowRGB: Bool`, `allowHSB: Bool`, `allowCMYK: Bool` determines if the values will be shown in the details view and if it's available to be edited via sliders (except CMYK)
