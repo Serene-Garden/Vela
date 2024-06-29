@@ -41,9 +41,13 @@ Default as `Text("Vela")`
 
 ## Requirements
 ### Declarement
-You are responsible for adding the following description to your app, where ever it is as long as it could be found.
+You are responsible for adding one of the following description to your app, where ever it is as long as it could be found. Pick one below
 
 > Powered by Vela
+
+or
+
+> Powered by Garden Vela
 
 If Vela is unable to be enabled, such as in watchOS 9, then this text could be removed.
 
