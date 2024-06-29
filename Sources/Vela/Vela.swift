@@ -13,11 +13,21 @@ let colorNames: [LocalizedStringResource] = [LocalizedStringResource("Vela.selec
 public struct VelaPicker<L: View>: View {
   public var color: Binding<Color>
   public var allowOpacity: Bool
+  public var allowRGB: Bool
+  public var allowHSB: Bool
+  public var allowCMYK: Bool
+  public var HSB_primary: Bool
   public var label: () -> L
-  public init(color: Binding<Color>, label: @escaping () -> L = {Text("Vela")}, allowOpacity: Bool = true) {
+  public var onSubmit: () -> Void = {}
+  public init(color: Binding<Color>, allowOpacity: Bool = true, allowRGB: Bool = true, allowHSB: Bool = true, allowCMYK: Bool = true, HSB_primary: Bool = false, label: @escaping () -> L = {Text("Vela")}, onSubmit: @escaping () -> Void = {}) {
     self.color = color
     self.allowOpacity = allowOpacity
+    self.allowRGB = allowRGB
+    self.allowHSB = allowHSB
+    self.allowCMYK = allowCMYK
+    self.HSB_primary = HSB_primary
     self.label = label
+    self.onSubmit = onSubmit
   }
   @State var isColorSheetDisplaying = false
   public var body: some View {
@@ -33,20 +43,27 @@ public struct VelaPicker<L: View>: View {
       }
     })
     .sheet(isPresented: $isColorSheetDisplaying, content: {
-      VelaMainView(color: color, allowOpacity: allowOpacity)
+      VelaMainView(color: color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
     })
+    .onDisappear {
+      onSubmit()
+    }
   }
 }
 
 struct VelaMainView: View {
   @Binding var color: Color
   var allowOpacity = true
+  var allowRGB = true
+  var allowHSB = true
+  var allowCMYK = true
+  var HSB_primary = false
   @AppStorage("VelaColorTab") var colorTab: Int = 0
   var body: some View {
     if colorTab == 0 {
-      VelaListView(color: $color, allowOpacity: allowOpacity)
+      VelaListView(color: $color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
     } else if colorTab == 1 {
-      VelaSliderView(color: $color, allowOpacity: allowOpacity)
+      VelaSliderView(color: $color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
     } else {
       Text("\(colorTab)").monospaced()
     }
@@ -97,6 +114,10 @@ struct VelaTabSheet: View {
 struct VelaColorIndicator: View {
   @Binding var color: Color
   var allowOpacity = true
+  var allowRGB = true
+  var allowHSB = true
+  var allowCMYK = true
+  var HSB_primary = false
   @State var colorDetailsSheetIsDisplaying = false
   @AppStorage("VelaColorPreviewTakesFullSpace") var VelaColorPreviewTakesFullSpace = true
   var body: some View {
@@ -111,7 +132,7 @@ struct VelaColorIndicator: View {
       })
       .ignoresSafeArea()
       .sheet(isPresented: $colorDetailsSheetIsDisplaying, content: {
-        VelaPickerDetailsView(color: color, allowOpacity: allowOpacity)
+        VelaPickerDetailsView(color: color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
       })
     }
   }
@@ -120,6 +141,10 @@ struct VelaColorIndicator: View {
 struct VelaPickerDetailsView: View {
   var color: Color
   var allowOpacity = true
+  var allowRGB = true
+  var allowHSB = true
+  var allowCMYK = true
+  var HSB_primary = false
   var body: some View {
     if #available(watchOS 10.0, *) {
       NavigationStack {
@@ -140,7 +165,7 @@ struct VelaPickerDetailsView: View {
                     .monospaced()
                   Spacer()
                 }
-                if allowOpacity && (color.RGB_values().3)*100==100 {
+                if allowOpacity || (color.RGB_values().3)*100 != 100 {
                   Group {
                     HStack {
                       Text(String(localized: "Vela.opacity", bundle: Bundle.module)) + Text(String(localized: "Vela.colon", bundle: Bundle.module)) + Text(String(Int((color.RGB_values().3)*100))).monospaced() + Text(String("%")).monospaced()
@@ -151,85 +176,117 @@ struct VelaPickerDetailsView: View {
                 }
               }
             }
-            Divider()
-            Group {
-              Text(String(localized: "Vela.RGB", bundle: Bundle.module))
-                .bold()
-                .font(.title3)
-              HStack {
-                Text(String(localized: "Vela.RGB.red", bundle: Bundle.module))
-                Spacer()
-                Text("\(color.RGB_values().0)")
-                  .monospaced()
+            if (allowHSB && HSB_primary) {
+              Divider()
+              Group {
+                Text(String(localized: "Vela.HSB", bundle: Bundle.module))
+                  .bold()
+                  .font(.title3)
+                HStack {
+                  Text(String(localized: "Vela.HSB.hue", bundle: Bundle.module))
+                  Spacer()
+                  Text("\(color.HSB_values().0)") + Text(String("˚"))
+                    .monospaced()
+                }
+                HStack {
+                  Text(String(localized: "Vela.HSB.saturation", bundle: Bundle.module))
+                  Spacer()
+                  Text("\(color.HSB_values().1)") + Text(String("%"))
+                    .monospaced()
+                }
+                HStack {
+                  Text(String(localized: "Vela.HSB.brightness", bundle: Bundle.module))
+                  Spacer()
+                  Text("\(color.HSB_values().2)") + Text(String("%"))
+                    .monospaced()
+                }
               }
-              HStack {
-                Text(String(localized: "Vela.RGB.green", bundle: Bundle.module))
-                Spacer()
-                Text("\(color.RGB_values().1)")
-                  .monospaced()
+            }
+            if allowRGB {
+              Divider()
+              Group {
+                Text(String(localized: "Vela.RGB", bundle: Bundle.module))
+                  .bold()
+                  .font(.title3)
+                HStack {
+                  Text(String(localized: "Vela.RGB.red", bundle: Bundle.module))
+                  Spacer()
+                  Text("\(color.RGB_values().0)")
+                    .monospaced()
+                }
+                HStack {
+                  Text(String(localized: "Vela.RGB.green", bundle: Bundle.module))
+                  Spacer()
+                  Text("\(color.RGB_values().1)")
+                    .monospaced()
+                }
+                HStack {
+                  Text(String(localized: "Vela.RGB.blue", bundle: Bundle.module))
+                  Spacer()
+                  Text("\(color.RGB_values().2)")
+                    .monospaced()
+                }
               }
-              HStack {
-                Text(String(localized: "Vela.RGB.blue", bundle: Bundle.module))
-                Spacer()
-                Text("\(color.RGB_values().2)")
-                  .monospaced()
+            }
+            if (allowHSB && !HSB_primary) {
+              Divider()
+              Group {
+                Text(String(localized: "Vela.HSB", bundle: Bundle.module))
+                  .bold()
+                  .font(.title3)
+                HStack {
+                  Text(String(localized: "Vela.HSB.hue", bundle: Bundle.module))
+                  Spacer()
+                  Text("\(color.HSB_values().0)") + Text(String("˚"))
+                    .monospaced()
+                }
+                HStack {
+                  Text(String(localized: "Vela.HSB.saturation", bundle: Bundle.module))
+                  Spacer()
+                  Text("\(color.HSB_values().1)") + Text(String("%"))
+                    .monospaced()
+                }
+                HStack {
+                  Text(String(localized: "Vela.HSB.brightness", bundle: Bundle.module))
+                  Spacer()
+                  Text("\(color.HSB_values().2)") + Text(String("%"))
+                    .monospaced()
+                }
               }
             }
             Divider()
-            Group {
-              Text(String(localized: "Vela.HSB", bundle: Bundle.module))
-                .bold()
-                .font(.title3)
-              HStack {
-                Text(String(localized: "Vela.HSB.hue", bundle: Bundle.module))
-                Spacer()
-                Text("\(color.HSB_values().0)") + Text(String("˚"))
-                  .monospaced()
-              }
-              HStack {
-                Text(String(localized: "Vela.HSB.saturation", bundle: Bundle.module))
-                Spacer()
-                Text("\(color.HSB_values().1)") + Text(String("%"))
-                  .monospaced()
-              }
-              HStack {
-                Text(String(localized: "Vela.HSB.brightness", bundle: Bundle.module))
-                Spacer()
-                Text("\(color.HSB_values().2)") + Text(String("%"))
-                  .monospaced()
-              }
-            }
-            Divider()
-            Group {
-              Text(String(localized: "Vela.CMYK", bundle: Bundle.module))
-                .bold()
-                .font(.title3)
-              Text(String(localized: "Vela.CMYK.inaccurate", bundle: Bundle.module))
-                .foregroundStyle(.secondary)
-                .font(.caption)
-              HStack {
-                Text(String(localized: "Vela.CMYK.cyan", bundle: Bundle.module))
-                Spacer()
-                Text("\(color.CMYK_values().0)") + Text(String("%"))
-                  .monospaced()
-              }
-              HStack {
-                Text(String(localized: "Vela.CMYK.magenta", bundle: Bundle.module))
-                Spacer()
-                Text("\(color.CMYK_values().1)") + Text(String("%"))
-                  .monospaced()
-              }
-              HStack {
-                Text(String(localized: "Vela.CMYK.yellow", bundle: Bundle.module))
-                Spacer()
-                Text("\(color.CMYK_values().2)") + Text(String("%"))
-                  .monospaced()
-              }
-              HStack {
-                Text(String(localized: "Vela.CMYK.black", bundle: Bundle.module))
-                Spacer()
-                Text("\(color.CMYK_values().3)") + Text(String("%"))
-                  .monospaced()
+            if allowCMYK {
+              Group {
+                Text(String(localized: "Vela.CMYK", bundle: Bundle.module))
+                  .bold()
+                  .font(.title3)
+                Text(String(localized: "Vela.CMYK.inaccurate", bundle: Bundle.module))
+                  .foregroundStyle(.secondary)
+                  .font(.caption)
+                HStack {
+                  Text(String(localized: "Vela.CMYK.cyan", bundle: Bundle.module))
+                  Spacer()
+                  Text("\(color.CMYK_values().0)") + Text(String("%"))
+                    .monospaced()
+                }
+                HStack {
+                  Text(String(localized: "Vela.CMYK.magenta", bundle: Bundle.module))
+                  Spacer()
+                  Text("\(color.CMYK_values().1)") + Text(String("%"))
+                    .monospaced()
+                }
+                HStack {
+                  Text(String(localized: "Vela.CMYK.yellow", bundle: Bundle.module))
+                  Spacer()
+                  Text("\(color.CMYK_values().2)") + Text(String("%"))
+                    .monospaced()
+                }
+                HStack {
+                  Text(String(localized: "Vela.CMYK.black", bundle: Bundle.module))
+                  Spacer()
+                  Text("\(color.CMYK_values().3)") + Text(String("%"))
+                    .monospaced()
+                }
               }
             }
           }

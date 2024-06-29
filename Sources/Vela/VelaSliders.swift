@@ -22,6 +22,10 @@ struct VelaSliderView: View {
   @State var sliderOpacity = 100.0
   @State var syncRGB = false
   @State var syncHSB = false
+  var allowRGB = true
+  var allowHSB = true
+  var allowCMYK = true
+  var HSB_primary = false
   var body: some View {
     NavigationStack {
       Group {
@@ -95,18 +99,24 @@ struct VelaSliderView: View {
         }
         
       }
+      .onAppear {
+        if (!allowRGB || HSB_primary) {
+          colorIsRGB = false
+        }
+      }
       .toolbar {
         if #available(watchOS 10.0, *) {
           ToolbarItemGroup(placement: .topBarTrailing, content: {
-            VelaColorIndicator(color: $color, allowOpacity: allowOpacity)
+            VelaColorIndicator(color: $color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
           })
           ToolbarItemGroup(placement: .bottomBar, content: {
             HStack {
               Button(action: {
-                colorIsRGB.toggle()
+                  colorIsRGB.toggle()
               }, label: {
                 Image(systemName: "paintpalette")
               })
+              .disabled(!(!allowRGB || !allowHSB))
               Spacer()
               VelaTabSheet()
             }

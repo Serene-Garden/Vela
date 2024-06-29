@@ -10,6 +10,10 @@ import SwiftUI
 struct VelaListView: View {
   @Binding var color: Color
   var allowOpacity = true
+  var allowRGB = true
+  var allowHSB = true
+  var allowCMYK = true
+  var HSB_primary = false
   var body: some View {
     NavigationStack {
       List {
@@ -56,7 +60,7 @@ struct VelaListView: View {
       .toolbar {
         if #available(watchOS 10.0, *) {
           ToolbarItemGroup(placement: .topBarTrailing, content: {
-            VelaColorIndicator(color: $color, allowOpacity: allowOpacity)
+            VelaColorIndicator(color: $color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
           })
           ToolbarItemGroup(placement: .bottomBar, content: {
             VelaTabSheet()
