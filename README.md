@@ -39,6 +39,16 @@ Default as `true`.
 
 Default as `Text("Vela")`
 
+### allowRGB, allowHSB & allowCMYK
+`allowRGB: Bool`, `allowHSB: Bool`, `allowCMYK: Bool` determines if the values will be shown in the details view and if it's available to be edited via sliders (except CMYK)
+
+Default as `true`
+
+### HSB_primary
+`HSB_primary: Bool` can make HSB the primary option for checking and editing the color.
+
+Default as `false`
+
 ## Requirements
 ### Declarement
 You are responsible for adding one of the following description to your app, where ever it is as long as it could be found. Pick one below
