@@ -22,9 +22,7 @@ So I had to make a color picker by my own, in order to select a color on Watch.
  
 ## Parameters
 ```swift
-VelaPicker(color: $color, allowOpacity: true, label: {
-    Text("Vela")
-}, allowRGB: true, allowHSB: true, allowCMYK: true, HSB_primary: false)
+VelaPicker(color: $color, allowOpacity: true, allowRGB: true, allowHSB: true, allowCMYK: true, HSB_primary: false, label: {Text("Vela")}, onSubmit: {print("Vela color submitted")})
 ```
 ### color
 `color: Binding<Color>` determine what is the color.
@@ -33,11 +31,6 @@ VelaPicker(color: $color, allowOpacity: true, label: {
 `allowOpacity: Bool` shows if the opacity value is allowed to be seen and changed.
 
 Default as `true`.
-
-### label
-`label: () -> L` recieves a view for the picker's label.
-
-Default as `Text("Vela")`
 
 ### allowRGB, allowHSB & allowCMYK
 `allowRGB: Bool`, `allowHSB: Bool`, `allowCMYK: Bool` determines if the values will be shown in the details view and if it's available to be edited via sliders (except CMYK)
@@ -48,6 +41,18 @@ Default as `true`
 `HSB_primary: Bool` can make HSB the primary option for checking and editing the color.
 
 Default as `false`
+
+### label
+`label: () -> L` recieves a view for the picker's label.
+
+Default as `Text("Vela")`
+
+### onSubmit
+`onSubmit: () -> Void` receives actions and will be run when the sheet is closed.
+
+This works like `onSubmit` in the native SwiftUI.
+
+Default as `{}` (runs nothing when submit)
 
 ## Requirements
 ### Declarement
