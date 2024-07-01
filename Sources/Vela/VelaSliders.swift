@@ -117,7 +117,7 @@ struct VelaSliderView: View {
               }, label: {
                 Image(systemName: "paintpalette")
               })
-              .disabled(!(!allowRGB || !allowHSB))
+              .disabled(!allowRGB || !allowHSB)
               Spacer()
               VelaTabSheet(color: $color, defaultColor: defaultColor)
             }
