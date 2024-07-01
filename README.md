@@ -1,4 +1,8 @@
 # Vela
+**Important Message for Developers**
+
+**Requirements now does not require develoeprs to add declarements by there own anymore.**
+
 A Color Picker for watchOS
 
 ![:name](https://counter.seku.su/cmoe?name=Garden785-Vela&theme=r34)
@@ -62,16 +66,9 @@ Default as `{}` (runs nothing when submit)
 
 ## Requirements
 ### Declarement
-You are responsible for adding one of the following description to your app, where ever it is as long as it could be found. Pick one below
-
-> Powered by Vela
-
-or
-
-> Powered by Garden Vela
+You *SHALL NOT* remove declarement in the program, *unless* you declared it somewhere else *in an obvious place*, like package credits
 
 If Vela is unable to be enabled, such as in watchOS 9, then this text could be removed.
-
 
 ## Credits
 **ThreeManager785**
