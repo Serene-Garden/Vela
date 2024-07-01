@@ -14,6 +14,7 @@ So I had to make a color picker by my own, in order to select a color on Watch.
 - Adjust Color in Sliders
   - Supports RGB & HSB
   - Supports Opacity Edit
+  - Reset to default color
 - Check Color Details
   - Hex Code
   - Opacity
