@@ -25,7 +25,6 @@ struct VelaListView: View {
                 Button(action: {
                   withAnimation {
                     color = colorSelections[colorGroupIndex][colorSubgroupIndex]
-                    print(color)
                   }
                 }, label: {
                   HStack {

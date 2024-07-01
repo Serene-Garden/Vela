@@ -207,16 +207,13 @@ struct VelaSliderUnit: View {
             }
             .digitalCrownRotation(detent: $digitalCrownRotation, from: Int(minimumValue), through: Int(maximumValue), by: 1, sensitivity: sensitivities[VelaSlidersCrownSensitivity], isContinuous: false)
             .onAppear {
-              print("Printer onAppear toggled")
               digitalCrownRotation = Int(sliderValue)
-              print("Printer", digitalCrownRotation, sliderValue)
 //              Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
 //                
 //              }
             }
             .onChange(of: syncValueAndRotation, {
               if syncValueAndRotation {
-                print("Printer synced")
                 syncValueAndRotation = false
                 digitalCrownRotation = Int(sliderValue)
               }

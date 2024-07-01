@@ -46,10 +46,10 @@ public struct VelaPicker<L: View>: View {
     })
     .sheet(isPresented: $isColorSheetDisplaying, content: {
       VelaMainView(color: color, defaultColor: defaultColor, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
+        .onDisappear {
+          onSubmit()
+        }
     })
-    .onDisappear {
-      onSubmit()
-    }
   }
 }
 
