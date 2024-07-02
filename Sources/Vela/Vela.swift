@@ -374,9 +374,18 @@ extension Color {
     let blue: Double = Double(self.RGB_values().2)/255
     let opacity = self.RGB_values().3
     let black = 1 - max(red, green, blue)
-    let cyan = (1-red-black)/(1-black)
-    let magenta = (1-green-black)/(1-black)
-    let yellow = (1-blue-black)/(1-black)
+    let cyan: Double
+    let magenta: Double
+    let yellow: Double
+    if black > 0 {
+      cyan = (1-red-black)/(1-black)
+      magenta = (1-green-black)/(1-black)
+      yellow = (1-blue-black)/(1-black)
+    } else {
+      cyan = 0
+      magenta = 0
+      yellow = 0
+    }
     return(Int(cyan*100), Int(magenta*100), Int(yellow*100), Int(black*100), opacity)
   }
   
