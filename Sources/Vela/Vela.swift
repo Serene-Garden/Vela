@@ -20,6 +20,17 @@ public struct VelaPicker<L: View>: View {
   public var HSB_primary: Bool
   public var label: () -> L
   public var onSubmit: () -> Void = {}
+  /// Vela Color Picker
+  /// - Parameters:
+  ///   - color: Determine what is the color.
+  ///   - defaultColor: Allows users to reset their color to the default one. Default as `nil`
+  ///   - allowOpacity: Shows if the opacity value is allowed to be seen and changed. Default as `true`
+  ///   - allowRGB: Determines if the RGB values will be shown in the details view and if it's available to be edited via sliders. Default as `true`
+  ///   - allowHSB: Determines if the HSB values will be shown in the details view and if it's available to be edited via sliders. Default as `true`
+  ///   - allowCMYK: Determines if the CMYK values will be shown in the details view. Default as `true`
+  ///   - HSB_primary: Make HSB the primary option for checking and editing the color. Default as `false`
+  ///   - label: A view for the picker's label. Default as `Text("Vela")`
+  ///   - onSubmit: Actions will be run when the sheet is closed. This works like `onSubmit` in the native SwiftUI. Default as `{}` (runs nothing when submit)
   public init(color: Binding<Color>, defaultColor: Color? = nil, allowOpacity: Bool = true, allowRGB: Bool = true, allowHSB: Bool = true, allowCMYK: Bool = true, HSB_primary: Bool = false, label: @escaping () -> L = {Text("Vela")}, onSubmit: @escaping () -> Void = {}) {
     self.color = color
     self.defaultColor = defaultColor
@@ -377,7 +388,7 @@ extension Color {
     let cyan: Double
     let magenta: Double
     let yellow: Double
-    if black > 0 {
+    if black < 1 {
       cyan = (1-red-black)/(1-black)
       magenta = (1-green-black)/(1-black)
       yellow = (1-blue-black)/(1-black)
