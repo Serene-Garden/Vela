@@ -22,7 +22,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%ld"
+            "value" : "%lf"
           }
         }
       }
@@ -267,8 +267,21 @@
         }
       }
     },
-    "Vela.defualt" : {
-
+    "Vela.default" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use Default Color"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用默认颜色"
+          }
+        }
+      }
     },
     "Vela.details" : {
       "localizations" : {

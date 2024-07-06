@@ -77,6 +77,9 @@ If Vela is unable to be enabled, such as in watchOS 9, then this text could be r
 - Acknowlegements Learning
 - Almost Everything, I think
 
+**WindowsMEMZ**
+- Debug
+
 ## Privacy
 Vela collects literally nothing.
 

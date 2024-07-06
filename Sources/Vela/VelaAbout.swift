@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public let VelaVersion = "2.1.4"
+public let VelaVersion = "2.1.7"
 
 public struct VelaSettingsView: View {
   public init(VelaColorPreviewTakesFullSpace: Bool = true) {
@@ -23,12 +23,12 @@ public struct VelaSettingsView: View {
             HStack {
               Spacer()
               VStack(alignment: .center) {
-                Text(String("Vela"))
+                Text(verbatim: "Vela")
                   .bold()
                   .font(.title2)
                 Group {
-                  Text(String("By Serene Garden"))
-                  Text(String(VelaVersion))
+                  Text(verbatim: "By Serene Garden")
+                  Text(verbatim: VelaVersion)
                     .monospaced()
                 }
                 //        .foregroundStyle(.secondary)
@@ -50,9 +50,10 @@ public struct VelaSettingsView: View {
             NavigationLink(destination: {
               List {
                 Section(content: {
-                  Text(String("ThreeManager785"))
+                  Text(verbatim: "ThreeManager785")
+                  Text(verbatim: "WindowsMEMZ")
                 }, footer: {
-                  Text(String("https://github.com/Serene-Garden/Vela"))
+                  Text(verbatim: "https://github.com/Serene-Garden/Vela")
                 })
               }
             }, label: {
