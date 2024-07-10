@@ -121,14 +121,10 @@ struct VelaTabSheet: View {
             if defaultColor != nil {
               Button(action: {
                 color = defaultColor!
-//                dismiss()
+                //                dismiss()
               }, label: {
                 HStack {
-                  if #available(watchOS 11.0, *) {
-                    VelaLabel(localizedStringKey: "Vela.default", labelIcon: "clock.arrow.trianglehead.counterclockwise.rotate.90")
-                  } else {
-                    VelaLabel(localizedStringKey: "Vela.default", labelIcon: "arrow.counterclockwise")
-                  }
+                  VelaLabel(localizedStringKey: "Vela.default", labelIcon: "clock.arrow.circlepath")
                   Spacer()
                   if color == defaultColor! {
                     Image(systemName: "checkmark")
