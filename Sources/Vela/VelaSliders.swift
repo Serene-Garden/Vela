@@ -27,6 +27,7 @@ struct VelaSliderView: View {
   var allowHSB = true
   var allowCMYK = true
   var HSB_primary = false
+  var aboutLinkIsHidden = false
   var body: some View {
     NavigationStack {
       Group {
@@ -108,7 +109,7 @@ struct VelaSliderView: View {
       .toolbar {
         if #available(watchOS 10.0, *) {
           ToolbarItemGroup(placement: .topBarTrailing, content: {
-            VelaColorIndicator(color: $color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
+            VelaColorIndicator(color: $color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary, aboutLinkIsHidden: aboutLinkIsHidden)
           })
           ToolbarItemGroup(placement: .bottomBar, content: {
             HStack {

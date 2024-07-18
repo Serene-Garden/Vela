@@ -18,6 +18,7 @@ public struct VelaPicker<L: View>: View {
   public var allowHSB: Bool
   public var allowCMYK: Bool
   public var HSB_primary: Bool
+  public var aboutLinkIsHidden: Bool
   public var label: () -> L
   public var onSubmit: () -> Void = {}
   /// Vela Color Picker
@@ -29,9 +30,10 @@ public struct VelaPicker<L: View>: View {
   ///   - allowHSB: Determines if the HSB values will be shown in the details view and if it's available to be edited via sliders. Default as `true`
   ///   - allowCMYK: Determines if the CMYK values will be shown in the details view. Default as `true`
   ///   - HSB_primary: Make HSB the primary option for checking and editing the color. Default as `false`
+  ///   - aboutLinkIsHidden: affects the language sheet, determine if the About link in it will be hidden or not. Default as `false`
   ///   - label: A view for the picker's label. Default as `Text("Vela")`
   ///   - onSubmit: Actions will be run when the sheet is closed. This works like `onSubmit` in the native SwiftUI. Default as `{}` (runs nothing when submit)
-  public init(color: Binding<Color>, defaultColor: Color? = nil, allowOpacity: Bool = true, allowRGB: Bool = true, allowHSB: Bool = true, allowCMYK: Bool = true, HSB_primary: Bool = false, label: @escaping () -> L = {Text("Vela")}, onSubmit: @escaping () -> Void = {}) {
+  public init(color: Binding<Color>, defaultColor: Color? = nil, allowOpacity: Bool = true, allowRGB: Bool = true, allowHSB: Bool = true, allowCMYK: Bool = true, HSB_primary: Bool = false, aboutLinkIsHidden: Bool = false, label: @escaping () -> L = {Text("Vela")}, onSubmit: @escaping () -> Void = {}) {
     self.color = color
     self.defaultColor = defaultColor
     self.allowOpacity = allowOpacity
@@ -39,6 +41,7 @@ public struct VelaPicker<L: View>: View {
     self.allowHSB = allowHSB
     self.allowCMYK = allowCMYK
     self.HSB_primary = HSB_primary
+    self.aboutLinkIsHidden = aboutLinkIsHidden
     self.label = label
     self.onSubmit = onSubmit
   }
@@ -56,7 +59,7 @@ public struct VelaPicker<L: View>: View {
       }
     })
     .sheet(isPresented: $isColorSheetDisplaying, content: {
-      VelaMainView(color: color, defaultColor: defaultColor, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
+      VelaMainView(color: color, defaultColor: defaultColor, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary, aboutLinkIsHidden: aboutLinkIsHidden)
         .onDisappear {
           onSubmit()
         }
@@ -72,12 +75,13 @@ struct VelaMainView: View {
   var allowHSB = true
   var allowCMYK = true
   var HSB_primary = false
+  var aboutLinkIsHidden = false
   @AppStorage("VelaColorTab") var colorTab: Int = 0
   var body: some View {
     if colorTab == 0 {
-      VelaListView(color: $color, defaultColor: defaultColor, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
+      VelaListView(color: $color, defaultColor: defaultColor, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary, aboutLinkIsHidden: aboutLinkIsHidden)
     } else if colorTab == 1 {
-      VelaSliderView(color: $color, defaultColor: defaultColor, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
+      VelaSliderView(color: $color, defaultColor: defaultColor, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary, aboutLinkIsHidden: aboutLinkIsHidden)
     } else {
       Text("\(colorTab)").monospaced()
     }
@@ -148,6 +152,7 @@ struct VelaColorIndicator: View {
   var allowHSB = true
   var allowCMYK = true
   var HSB_primary = false
+  var aboutLinkIsHidden = false
   @State var colorDetailsSheetIsDisplaying = false
   @AppStorage("VelaColorPreviewTakesFullSpace") var VelaColorPreviewTakesFullSpace = true
   var body: some View {
@@ -162,7 +167,7 @@ struct VelaColorIndicator: View {
       })
       .ignoresSafeArea()
       .sheet(isPresented: $colorDetailsSheetIsDisplaying, content: {
-        VelaPickerDetailsView(color: color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary)
+        VelaPickerDetailsView(color: color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary, aboutLinkIsHidden: aboutLinkIsHidden)
       })
     }
   }
@@ -175,6 +180,7 @@ struct VelaPickerDetailsView: View {
   var allowHSB = true
   var allowCMYK = true
   var HSB_primary = false
+  var aboutLinkIsHidden = false
   var body: some View {
     if #available(watchOS 10.0, *) {
       NavigationStack {
@@ -323,14 +329,16 @@ struct VelaPickerDetailsView: View {
           .padding(.horizontal, 3)
           .navigationTitle(Text(String(localized: "Vela.details", bundle: Bundle.module)))
           .toolbar {
-            if #available(watchOS 10.0, *) {
-              ToolbarItem(placement: .topBarTrailing, content: {
-                NavigationLink(destination: {
-                  VelaSettingsView()
-                }, label: {
-                  Image(systemName: "info")
+            if !aboutLinkIsHidden {
+              if #available(watchOS 10.0, *) {
+                ToolbarItem(placement: .topBarTrailing, content: {
+                  NavigationLink(destination: {
+                    VelaSettingsView()
+                  }, label: {
+                    Image(systemName: "info")
+                  })
                 })
-              })
+              }
             }
           }
         }

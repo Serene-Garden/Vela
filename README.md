@@ -52,6 +52,13 @@ Default as `true`
 
 Default as `false`
 
+### aboutLinkIsHidden
+`aboutLinkIsHidden: Bool` affects the color details sheet, determine if the About link in it will be hidden or not.
+
+Please use `VelaSettingsView()` to add a link to the About page if you hide it.
+
+Default as `false`
+
 ### label
 `label: () -> L` recieves a view for the picker's label.
 
