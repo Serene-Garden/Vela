@@ -1,7 +1,4 @@
 # Vela
-**Important Message for Developers**
-
-**Requirements now does not require develoeprs to add declarements by there own anymore.**
 
 A Color Picker for watchOS
 
