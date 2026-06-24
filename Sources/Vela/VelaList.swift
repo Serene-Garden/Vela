@@ -1,10 +1,3 @@
-//
-//  VelaList.swift
-//  
-//
-//  Created by 雷美淳 on 2024/5/21.
-//
-
 import SwiftUI
 
 struct VelaListView: View {
@@ -39,7 +32,7 @@ struct VelaListView: View {
             }
             .navigationTitle(Text(colorNames[colorGroupIndex]))
             .toolbar {
-              if #available(watchOS 10.0, *) {
+              if #available(watchOS 10.5, *) {
                 ToolbarItemGroup(placement: .topBarTrailing, content: {
                   VelaColorIndicator(color: $color, allowOpacity: allowOpacity)
                 })
@@ -59,7 +52,7 @@ struct VelaListView: View {
         }
       }
       .toolbar {
-        if #available(watchOS 10.0, *) {
+        if #available(watchOS 10.5, *) {
           ToolbarItemGroup(placement: .topBarTrailing, content: {
             VelaColorIndicator(color: $color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary, aboutLinkIsHidden: aboutLinkIsHidden)
           })

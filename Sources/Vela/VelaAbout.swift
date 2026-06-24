@@ -1,13 +1,6 @@
-//
-//  VelaAbout.swift
-//
-//
-//  Created by 雷美淳 on 2024/5/18.
-//
-
 import SwiftUI
 
-public let VelaVersion = "2.3.0"
+public let VelaVersion = "2.3.1"
 
 public struct VelaSettingsView: View {
   public init(VelaColorPreviewTakesFullSpace: Bool = true) {

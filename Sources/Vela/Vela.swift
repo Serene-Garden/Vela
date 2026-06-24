@@ -1,10 +1,3 @@
-//
-//  ColorPickerView.swift
-//  Vela
-//
-//  Created by 785 on 2024/5/17.
-//
-
 import SwiftUI
 import UIKit
 
@@ -182,7 +175,7 @@ struct VelaPickerDetailsView: View {
   var HSB_primary = false
   var aboutLinkIsHidden = false
   var body: some View {
-    if #available(watchOS 10.0, *) {
+      if #available(watchOS 10.5, *) {
       NavigationStack {
         ScrollView {
           VStack(alignment: .leading) {
@@ -330,7 +323,7 @@ struct VelaPickerDetailsView: View {
           .navigationTitle(Text(String(localized: "Vela.details", bundle: Bundle.module)))
           .toolbar {
             if !aboutLinkIsHidden {
-              if #available(watchOS 10.0, *) {
+              if #available(watchOS 10.5, *) {
                 ToolbarItem(placement: .topBarTrailing, content: {
                   NavigationLink(destination: {
                     VelaSettingsView()

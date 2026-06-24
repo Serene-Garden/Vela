@@ -1,11 +1,3 @@
-//
-//
-//  VelaSliders.swift
-//
-//
-//  Created by 雷美淳 on 2024/5/19.
-//
-
 import SwiftUI
 import UIKit
 
@@ -107,7 +99,7 @@ struct VelaSliderView: View {
         }
       }
       .toolbar {
-        if #available(watchOS 10.0, *) {
+        if #available(watchOS 10.5, *) {
           ToolbarItemGroup(placement: .topBarTrailing, content: {
             VelaColorIndicator(color: $color, allowOpacity: allowOpacity, allowRGB: allowRGB, allowHSB: allowHSB, allowCMYK: allowCMYK, HSB_primary: HSB_primary, aboutLinkIsHidden: aboutLinkIsHidden)
           })
